@@ -70,7 +70,7 @@ namespace ZXing.Aztec
 
             decoderResult = new Decoder().decode(detectorResult);
          }
-         if (decoderResult == null)
+         if (detectorResult != null && decoderResult == null)
          {
             // errors in (known) alignment lines
             var matrix = detectorResult.Bits;
