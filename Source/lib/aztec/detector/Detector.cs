@@ -300,7 +300,11 @@ namespace ZXing.Aztec.Internal
             if (nbCenterLayers > 2)
             {
                float q = distance(poutd, pouta)*nbCenterLayers/(distance(pind, pina)*(nbCenterLayers + 2));
-               if (q < 0.75 || q > 1.25 || !isWhiteOrBlackRectangle(pouta, poutb, poutc, poutd))
+               // average dimension (=width=height) of single square
+               float avgPtDim = (distance(poutd, pouta) + 1) / (nbCenterLayers * 2 - 1);
+               // half of above
+               int avgPtDim2 = MathUtils.round(avgPtDim / 2);
+               if (q < 0.75 || q > 1.25 || !isWhiteOrBlackRectangle(pouta, poutb, poutc, poutd, avgPtDim2))
                {
                   break;
                }
@@ -488,11 +492,12 @@ namespace ZXing.Aztec.Internal
       /// <param name="p2">The p2.</param>
       /// <param name="p3">The p3.</param>
       /// <param name="p4">The p4.</param>
+      /// <param name="corr">The corr.</param>
       /// <returns>true if the border of the rectangle passed in parameter is compound of white points only
       /// or black points only</returns>
-      private bool isWhiteOrBlackRectangle(Point p1, Point p2, Point p3, Point p4)
+      private bool isWhiteOrBlackRectangle(Point p1, Point p2, Point p3, Point p4, int corr)
       {
-         const int corr = 3;
+         //const int corr = 3;
 
          p1 = new Point(p1.X - corr, p1.Y + corr);
          p2 = new Point(p2.X - corr, p2.Y - corr);
